@@ -14,10 +14,6 @@
     <div class="navbar-inner">
       <a href="../index.html" class="logo">AuctionHouse</a>
 
-      <div class="search">
-        <input type="text" placeholder="Search listings..." disabled />
-      </div>
-
       <nav class="nav-links" id="nav-links"></nav>
     </div>
   </header>
@@ -26,25 +22,43 @@
 
     <!-- Header -->
     <section class="profile-header">
-      <div class="profile-banner">
-        <img id="profile-banner-img" alt="Profile banner" />
-      </div>
+  <div class="profile-banner">
+    <img id="profile-banner-img" alt="Profile banner" />
+  </div>
 
-      <div class="profile-head-row">
-        <div class="profile-avatar">
-          <img id="profile-avatar-img" alt="Profile avatar" />
-        </div>
+  <!-- Edit button -->
+  <button
+    id="edit-profile-btn"
+    class="btn-outline edit-profile-banner-btn"
+  >
+    Edit profile
+  </button>
 
-        <div class="profile-meta">
-          <h1 id="profile-name">Loading...</h1>
-          <p id="profile-credits">Credits: 0</p>
-        </div>
-      </div>
-    </section>
+  <!-- Credits -->
+  <div
+    id="profile-credits-large"
+    class="profile-credits-large"
+  >
+    Credits: 0
+  </div>
 
-    <!-- Edit profile -->
-    <section class="profile-card">
-      <h2>Edit profile</h2>
+  <!-- Avatar + name + bio -->
+  <div class="profile-head-row">
+    <div class="profile-avatar">
+      <img id="profile-avatar-img" alt="Profile avatar" />
+    </div>
+
+    <div class="profile-meta">
+      <h1 id="profile-name">Loading...</h1>
+      <p id="profile-bio" class="profile-bio"></p>
+    </div>
+  </div>
+</section>
+
+
+
+    <section class="profile-card hidden" id="edit-profile-section">
+      <h2>Profile</h2>
 
       <form id="profile-form" class="profile-form">
 
@@ -82,7 +96,7 @@
       </form>
     </section>
 
-    <!-- Listings created -->
+ 
     <section>
       <h2>Your listings</h2>
       <div class="grid" id="user-listings">
@@ -90,7 +104,7 @@
       </div>
     </section>
 
-    <!-- Listings bid on -->
+
     <section>
       <h2>Listings you’ve bid on</h2>
       <div class="grid" id="user-bids">
@@ -102,7 +116,7 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <p>© 2025 AuctionHouse</p>
+      <p>© 2025 AuctionHouse YG</p>
     </div>
   </footer>
 

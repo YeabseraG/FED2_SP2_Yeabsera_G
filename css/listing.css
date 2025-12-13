@@ -50,6 +50,8 @@
   margin-top: 0.5rem;
 }
 
+
+
 /* BID HISTORY */
 
 .bid-history h2 {
@@ -66,5 +68,11 @@
   justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+  .listing-layout {
+    grid-template-columns: 1fr;
+  }
 }
 

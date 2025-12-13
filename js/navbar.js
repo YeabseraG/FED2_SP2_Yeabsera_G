@@ -6,7 +6,6 @@ export function renderNavbar() {
 
   const user = getUser();
 
-  // Detect if current page is inside /pages
   const isPages = window.location.pathname.includes("/pages/");
 
   const home = isPages ? "../index.html" : "./index.html";
@@ -17,7 +16,7 @@ export function renderNavbar() {
     ? "./create-listing.html"
     : "./pages/create-listing.html";
 
-  // Logged out navbar
+  // LOGGED OUT
   if (!user) {
     navLinks.innerHTML = `
       <a href="${login}">Log in</a>
@@ -26,18 +25,27 @@ export function renderNavbar() {
     return;
   }
 
-  // Logged in navbar
+  // Avatar fallback handling (string OR object OR empty)
+  const avatarUrl =
+    user.avatar?.url ||
+    user.avatar ||
+    "https://via.placeholder.com/40";
+
+  // LOGGED IN
   navLinks.innerHTML = `
     <span class="credits">Credits: ${user.credits ?? 0}</span>
+
     <a href="${createListing}">Create listing</a>
-    <a href="${profile}">Profile</a>
+
     <button id="logout-btn" class="btn-link">Log out</button>
+
+    <a href="${profile}" class="nav-avatar" title="Profile">
+      <img src="${avatarUrl}" alt="Profile avatar" />
+    </a>
   `;
 
-  document
-    .getElementById("logout-btn")
-    .addEventListener("click", () => {
-      clearUser();
-      window.location.href = home;
-    });
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    clearUser();
+    window.location.href = home;
+  });
 }

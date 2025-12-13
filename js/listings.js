@@ -1,6 +1,6 @@
 import { AUCTION_LISTINGS_URL } from "./constants.js";
 import { apiFetch } from "./api.js";
-import { getMediaUrl } from "./utils.js"; // or wherever you put it
+import { getMediaUrl } from "./utils.js"; 
 
 const listingsGrid = document.getElementById("listings-grid");
 
@@ -8,7 +8,7 @@ export async function loadListings() {
   try {
     showLoading();
 
-    // Note: If your API supports sort/limit differently, we can adjust quickly.
+
     const result = await apiFetch(`${AUCTION_LISTINGS_URL}?limit=12&sort=created`);
 
     renderListings(result.data);
@@ -62,7 +62,7 @@ function renderListings(listings) {
   });
 }
 
-// Utilities (kept local for clarity)
+
 function getHighestBid(listing) {
   if (!Array.isArray(listing.bids) || listing.bids.length === 0) return "No bids";
   return Math.max(...listing.bids.map((b) => b.amount));

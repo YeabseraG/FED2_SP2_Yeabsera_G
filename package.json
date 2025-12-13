@@ -1,0 +1,17 @@
+{
+  "name": "auction-house",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "lint-staged": "^15.2.0",
+    "vitest": "^1.6.0"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  }
+}

@@ -10,7 +10,7 @@
   max-width: 520px;
 }
 
-/* Inputs & textarea */
+
 #create-listing-form input,
 #create-listing-form textarea {
   background: #ffffff;
@@ -21,14 +21,20 @@
   width: 100%;
 }
 
+
+
 /* Labels */
+
 #create-listing-form label {
   display: grid;
   gap: 0.4rem;
   color: #ffffff;
 }
 
+
+
 /* Button */
+
 #create-listing-form button {
   background: #000000;
   color: #ffffff;
@@ -43,7 +49,10 @@
   background-color: #111111;
 }
 
+
+
 /* Message */
+
 #create-listing-form .message {
   margin-top: 0.5rem;
 }

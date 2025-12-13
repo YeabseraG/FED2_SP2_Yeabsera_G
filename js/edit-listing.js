@@ -33,7 +33,7 @@ async function loadListing() {
     const listing = result.data;
     const user = getUser();
 
-    // Ownership check
+
     if (listing.seller?.name !== user.name) {
       alert("You can only edit your own listings.");
       window.location.href = "../index.html";

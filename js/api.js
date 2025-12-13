@@ -1,7 +1,7 @@
 export async function apiFetch(url, options = {}) {
   const response = await fetch(url, options);
 
-  // DELETE / 204 responses have no body
+ 
   if (response.status === 204) {
     return null;
   }

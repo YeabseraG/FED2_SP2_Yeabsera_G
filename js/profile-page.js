@@ -8,9 +8,8 @@ import {
 } from "./constants.js";
 import { getMediaUrl } from "./utils.js";
 
-
 const elName = document.getElementById("profile-name");
-const elCredits = document.getElementById("profile-credits");
+const elCreditsLarge = document.getElementById("profile-credits-large");
 const elBio = document.getElementById("bio");
 const elAvatar = document.getElementById("avatar");
 const elBanner = document.getElementById("banner");
@@ -22,6 +21,11 @@ const userListings = document.getElementById("user-listings");
 const userBids = document.getElementById("user-bids");
 const form = document.getElementById("profile-form");
 
+const editProfileBtn = document.getElementById("edit-profile-btn");
+const editSection = document.getElementById("edit-profile-section");
+const elProfileBio = document.getElementById("profile-bio");
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   renderNavbar();
 
@@ -31,10 +35,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // 🔒 Hide edit section by default
+  editSection.classList.add("hidden");
+
   await loadProfile();
   await loadUserActivity();
 
   form.addEventListener("submit", onSaveProfile);
+
+  editProfileBtn.addEventListener("click", () => {
+    editSection.classList.toggle("hidden");
+  });
 });
 
 async function loadProfile() {
@@ -43,21 +54,31 @@ async function loadProfile() {
 
   try {
     const result = await apiFetch(
-  `${AUCTION_PROFILES_URL}/${user.name}`,
-  {
-    headers: {
-      Authorization: `Bearer ${user.accessToken}`,
-      "X-Noroff-API-Key": API_KEY,
-    },
-  }
-);
-
+      `${AUCTION_PROFILES_URL}/${user.name}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+          "X-Noroff-API-Key": API_KEY,
+        },
+      }
+      
+    );
 
     const profile = result.data;
 
+    if (elCreditsLarge) {
+  elCreditsLarge.textContent = `Credits: ${profile.credits ?? 0}`;
+}
+
+
+    if (elProfileBio) {
+  elProfileBio.textContent = profile.bio || "No bio provided.";
+}
+
+
     elName.textContent = profile.name;
-    elCredits.textContent = `Credits: ${profile.credits ?? 0}`;
     elBio.value = profile.bio ?? "";
+
     const avatarUrl = getImageUrl(profile.avatar);
     const bannerUrl = getImageUrl(profile.banner);
 
@@ -68,12 +89,12 @@ async function loadProfile() {
     setImage(elBannerImg, bannerUrl);
 
     saveUser({
-      ...user,
-      name: profile.name,
-      credits: profile.credits,
-      avatar: profile.avatar,
-      banner: profile.banner,
-    });
+  ...user,
+  credits: profile.credits,
+  avatar: profile.avatar ?? null,
+  banner: profile.banner ?? null,
+});
+
 
     renderNavbar();
   } catch (error) {
@@ -92,9 +113,11 @@ async function onSaveProfile(e) {
 
   const payload = {
   bio: elBio.value.trim(),
+
   avatar: avatarUrl
     ? { url: avatarUrl, alt: "User avatar" }
     : null,
+
   banner: bannerUrl
     ? { url: bannerUrl, alt: "Profile banner" }
     : null,
@@ -104,15 +127,14 @@ async function onSaveProfile(e) {
   try {
     elMessage.textContent = "Saving...";
 
-    // ✅ FIX: username must be in the URL
     const result = await apiFetch(
-  `${AUCTION_PROFILES_URL}/${user.name}`,
-
+      `${AUCTION_PROFILES_URL}/${user.name}`,
       {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
           "X-Noroff-API-Key": API_KEY,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       }
@@ -124,7 +146,6 @@ async function onSaveProfile(e) {
     setImage(elAvatarImg, getImageUrl(updated.avatar));
     setImage(elBannerImg, getImageUrl(updated.banner));
 
-
     saveUser({
       ...user,
       credits: updated.credits ?? user.credits,
@@ -133,6 +154,9 @@ async function onSaveProfile(e) {
     });
 
     renderNavbar();
+
+    // ✅ Hide edit form after save
+    editSection.classList.add("hidden");
   } catch (error) {
     elMessage.textContent = error.message;
   }
@@ -154,22 +178,31 @@ async function loadUserActivity() {
     const listings = result.data || [];
 
     const created = listings.filter((l) => l.seller?.name === user.name);
-
-    const bidOn = listings.filter((l) =>
-     Array.isArray(l.bids) &&
-     l.bids.some((b) => b.bidder?.name === user.name)
+    const bidOn = listings.filter(
+      (l) => Array.isArray(l.bids) && l.bids.some((b) => b.bidder?.name === user.name)
     );
 
+    renderListingGrid(
+  userListings,
+  created,
+  "You haven’t created any listings yet.",
+  true // can edit
+);
 
-    renderListingGrid(userListings, created, "You haven’t created any listings yet.");
-    renderListingGrid(userBids, bidOn, "You haven’t bid on any listings yet.");
+renderListingGrid(
+  userBids,
+  bidOn,
+  "You haven’t bid on any listings yet.",
+  false // cannot edit
+);
+
   } catch (error) {
     userListings.innerHTML = `<p>Failed to load your listings: ${error.message}</p>`;
     userBids.innerHTML = `<p>Failed to load bid activity: ${error.message}</p>`;
   }
 }
 
-function renderListingGrid(container, listings, emptyText) {
+function renderListingGrid(container, listings, emptyText, canEdit = false) {
   if (!listings.length) {
     container.innerHTML = `<p>${emptyText}</p>`;
     return;
@@ -190,41 +223,39 @@ function renderListingGrid(container, listings, emptyText) {
     const card = document.createElement("article");
     card.className = "card";
 
-card.innerHTML = `
+    card.innerHTML = `
   <div class="card-image">
     <img src="${image}" alt="${escapeHtml(listing.title)}" />
   </div>
-
   <div class="card-body">
     <h3>${escapeHtml(listing.title)}</h3>
     <p class="meta">${bidsCount} bids · ${hours}h ${minutes}m</p>
     <p class="price">${getHighestBid(listing)} EUR</p>
 
-    <button class="delete-btn">Delete</button>
-    <button class="edit-btn">Edit</button>
-
+    ${canEdit ? `
+      <button class="edit-btn">Edit</button>
+      <button class="delete-btn">Delete</button>
+    ` : ""}
   </div>
 `;
 
-const deleteBtn = card.querySelector(".delete-btn");
 
-deleteBtn.addEventListener("click", async (e) => {
-  e.stopPropagation();
+    if (canEdit) {
+  const editBtn = card.querySelector(".edit-btn");
+  const deleteBtn = card.querySelector(".delete-btn");
 
-  if (!confirm("Are you sure you want to delete this listing?")) return;
+  editBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    window.location.href = `./edit-listing.html?id=${listing.id}`;
+  });
 
-  await deleteListing(listing.id);
-  await loadUserActivity(); // refresh profile lists
-});
-
-const editBtn = card.querySelector(".edit-btn");
-
-editBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  window.location.href = `./edit-listing.html?id=${listing.id}`;
-});
-
-
+  deleteBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    if (!confirm("Are you sure you want to delete this listing?")) return;
+    await deleteListing(listing.id);
+    await loadUserActivity();
+  });
+}
 
 
     card.addEventListener("click", () => {
@@ -247,14 +278,12 @@ function setImage(imgEl, url) {
   }
   imgEl.src = url;
   imgEl.style.display = "block";
-  imgEl.onerror = () => {
-    imgEl.style.display = "none";
-  };
+  imgEl.onerror = () => (imgEl.style.display = "none");
 }
 
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (m) => {
-    const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039" };
+    const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" };
     return map[m];
   });
 }
@@ -268,18 +297,11 @@ function getImageUrl(value) {
 
 async function deleteListing(listingId) {
   const user = getUser();
-
-  try {
-    await apiFetch(`${AUCTION_LISTINGS_URL}/${listingId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-        "X-Noroff-API-Key": API_KEY,
-      },
-    });
-  } catch (error) {
-    alert(`Failed to delete listing: ${error.message}`);
-  }
+  await apiFetch(`${AUCTION_LISTINGS_URL}/${listingId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${user.accessToken}`,
+      "X-Noroff-API-Key": API_KEY,
+    },
+  });
 }
-
-

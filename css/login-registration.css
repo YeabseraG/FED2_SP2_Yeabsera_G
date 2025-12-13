@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 4rem; /* pushes card higher */
+  padding-top: 4rem; 
 }
 
 
@@ -35,7 +35,7 @@
   background-color: #ffffff;
   color: #000000;
   border: 2px solid #ffffff;
-  border-radius: 0; /* square edges */
+  border-radius: 0; 
 }
 
 
@@ -50,7 +50,7 @@
   background-color: #000000;
   color: #ffffff;
   border: 1px solid #ffffff;
-  border-radius: 0; /* square edges */
+  border-radius: 0; 
   font-weight: 600;
   cursor: pointer;
 }

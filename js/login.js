@@ -1,5 +1,5 @@
 import { apiFetch } from "./api.js";
-import { AUTH_URL } from "./constants.js";
+import { AUTH_URL, API_KEY } from "./constants.js";
 import { saveUser } from "./storage.js";
 import { renderNavbar } from "./navbar.js";
 
@@ -19,13 +19,21 @@ form.addEventListener("submit", async (e) => {
   try {
     const result = await apiFetch(`${AUTH_URL}/login`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Noroff-API-Key": API_KEY,
+      },
       body: JSON.stringify({ email, password }),
     });
 
+    // 🔒 Store ONLY what we need
     saveUser({
       name: result.data.name,
+      email: result.data.email,
       credits: result.data.credits,
       accessToken: result.data.accessToken,
+      avatar: result.data.avatar ?? null,
+      banner: result.data.banner ?? null,
     });
 
     window.location.href = "../index.html";

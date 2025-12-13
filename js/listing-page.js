@@ -111,9 +111,6 @@ function renderBids(bids) {
 }
 
 
-/* =========================
-   BIDDING LOGIC
-   ========================= */
 
 function setupBidding(listing) {
   const user = getUser();
@@ -136,7 +133,7 @@ function setupBidding(listing) {
     return;
   }
 
-  // Enable
+
   button.disabled = false;
   input.disabled = false;
   hint.textContent = "";
@@ -173,7 +170,7 @@ async function placeBid(listingId, amount) {
       }
     );
 
-    // ✅ Correct approach
+
     await refreshUserCredits();
     await loadListing();
   } catch (error) {
