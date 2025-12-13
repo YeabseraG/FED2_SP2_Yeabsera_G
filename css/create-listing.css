@@ -1,0 +1,49 @@
+
+.profile-card h1 {
+  margin-bottom: 1rem;
+}
+
+#create-listing-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+  max-width: 520px;
+}
+
+/* Inputs & textarea */
+#create-listing-form input,
+#create-listing-form textarea {
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #ffffff;
+  border-radius: 0;
+  padding: 0.6rem;
+  width: 100%;
+}
+
+/* Labels */
+#create-listing-form label {
+  display: grid;
+  gap: 0.4rem;
+  color: #ffffff;
+}
+
+/* Button */
+#create-listing-form button {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 0;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  width: fit-content;
+}
+
+#create-listing-form button:hover {
+  background-color: #111111;
+}
+
+/* Message */
+#create-listing-form .message {
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Listing | AuctionHouse</title>
+
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/login-registration.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="logo">AuctionHouse</a>
+
+      <div class="search">
+        <input type="text" placeholder="Search listings..." disabled />
+      </div>
+
+      <nav class="nav-links" id="nav-links"></nav>
+    </div>
+  </header>
+
+  <main class="container auth-page">
+  <section class="auth-card">
+    <h1>Create listing</h1>
+
+    <form id="create-listing-form" class="auth-form">
+
+      <label>
+        Title
+        <input type="text" id="title" required />
+      </label>
+
+      <label>
+        Description
+        <textarea id="description" rows="4"></textarea>
+      </label>
+
+      <label>
+        Image URL
+        <input type="url" id="image" />
+      </label>
+
+      <label>
+        Auction end date
+        <input type="datetime-local" id="endsAt" required />
+      </label>
+
+      <button type="submit">Create listing</button>
+      <p id="message" class="message"></p>
+
+    </form>
+  </section>
+</main>
+
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© 2025 AuctionHouse</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/create-listing.js"></script>
+  <script type="module" src="../js/utils.js"></script>
+</body>
+</html>

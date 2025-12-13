@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Listing | AuctionHouse</title>
+
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/login-registration.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="logo">AuctionHouse</a>
+      <div class="search">
+        <input type="text" disabled />
+      </div>
+      <nav class="nav-links" id="nav-links"></nav>
+    </div>
+  </header>
+
+  <main class="container auth-page">
+  <section class="auth-card">
+    <h1>Edit listing</h1>
+
+    <form id="edit-listing-form" class="auth-form">
+
+      <label>
+        Title
+        <input type="text" id="title" required />
+      </label>
+
+      <label>
+        Description
+        <textarea id="description" rows="4"></textarea>
+      </label>
+
+      <label>
+        Image URL
+        <input type="url" id="image" />
+      </label>
+
+      <label>
+        Auction end date
+        <input type="datetime-local" id="endsAt" required />
+      </label>
+
+      <button type="submit">Save changes</button>
+      <p id="message" class="message"></p>
+
+    </form>
+  </section>
+</main>
+
+
+  <script type="module" src="../js/edit-listing.js"></script>
+</body>
+</html>

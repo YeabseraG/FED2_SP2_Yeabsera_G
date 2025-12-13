@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile | AuctionHouse</title>
+
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/profile.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="logo">AuctionHouse</a>
+
+      <div class="search">
+        <input type="text" placeholder="Search listings..." disabled />
+      </div>
+
+      <nav class="nav-links" id="nav-links"></nav>
+    </div>
+  </header>
+
+  <main class="container profile-page">
+
+    <!-- Header -->
+    <section class="profile-header">
+      <div class="profile-banner">
+        <img id="profile-banner-img" alt="Profile banner" />
+      </div>
+
+      <div class="profile-head-row">
+        <div class="profile-avatar">
+          <img id="profile-avatar-img" alt="Profile avatar" />
+        </div>
+
+        <div class="profile-meta">
+          <h1 id="profile-name">Loading...</h1>
+          <p id="profile-credits">Credits: 0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit profile -->
+    <section class="profile-card">
+      <h2>Edit profile</h2>
+
+      <form id="profile-form" class="profile-form">
+
+        <label>
+          Bio
+          <textarea
+            id="bio"
+            rows="4"
+            placeholder="Write a short bio about yourself..."
+          ></textarea>
+        </label>
+
+        <label>
+          Avatar image URL
+          <input
+            id="avatar"
+            type="url"
+            placeholder="Paste a direct image URL (e.g. https://images.unsplash.com/...)"
+          />
+          <small>Must be a direct link to an image</small>
+        </label>
+
+        <label>
+          Banner image URL
+          <input
+            id="banner"
+            type="url"
+            placeholder="Paste a direct image URL for your banner"
+          />
+          <small>Must be a direct link to an image</small>
+        </label>
+
+        <button type="submit">Save changes</button>
+        <p id="profile-message" class="message"></p>
+      </form>
+    </section>
+
+    <!-- Listings created -->
+    <section>
+      <h2>Your listings</h2>
+      <div class="grid" id="user-listings">
+        <p>Loading your listings...</p>
+      </div>
+    </section>
+
+    <!-- Listings bid on -->
+    <section>
+      <h2>Listings you’ve bid on</h2>
+      <div class="grid" id="user-bids">
+        <p>Loading your bid activity...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© 2025 AuctionHouse</p>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/profile-page.js"></script>
+  <script type="module" src="../js/utils.js"></script>
+</body>
+</html>

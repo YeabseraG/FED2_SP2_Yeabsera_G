@@ -1,0 +1,70 @@
+/* SINGLE LISTING */
+
+.listing-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.listing-image img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.listing-info h1 {
+  margin-bottom: 1rem;
+}
+
+.listing-info .price {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  margin: 1rem 0;
+  line-height: 1.5;
+}
+
+.bid-box {
+  margin-top: 1.5rem;
+}
+
+.bid-box input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.bid-box button {
+  width: 100%;
+  padding: 0.6rem;
+  background: #000;
+  color: #fff;
+  border: none;
+}
+
+.bid-box .hint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* BID HISTORY */
+
+.bid-history h2 {
+  margin-bottom: 1rem;
+}
+
+.bids {
+  list-style: none;
+  padding: 0;
+}
+
+.bids li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
