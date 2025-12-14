@@ -8,8 +8,9 @@ export async function loadListings() {
   try {
     showLoading();
 
-
-    const result = await apiFetch(`${AUCTION_LISTINGS_URL}?limit=12&sort=created`);
+    const result = await apiFetch(
+      `${AUCTION_LISTINGS_URL}?limit=12&sort=created`
+    );
 
     renderListings(result.data);
   } catch (error) {
@@ -30,7 +31,6 @@ function renderListings(listings) {
 
   listings.forEach((listing) => {
     const image = getMediaUrl(listing.media);
-
     const bidsCount = listing._count?.bids ?? 0;
 
     const endsAt = new Date(listing.endsAt);
@@ -50,7 +50,7 @@ function renderListings(listings) {
       <div class="card-body">
         <h3>${escapeHtml(listing.title)}</h3>
         <p class="meta">${bidsCount} bids · ${hours}h ${minutes}m</p>
-        <p class="price">${getHighestBid(listing)} EUR</p>
+        <p class="price">${getHighestBidText(listing)}</p>
       </div>
     `;
 
@@ -62,15 +62,24 @@ function renderListings(listings) {
   });
 }
 
+function getHighestBidText(listing) {
+  if (!Array.isArray(listing.bids) || listing.bids.length === 0) {
+    return "Click to join Auction";
+  }
 
-function getHighestBid(listing) {
-  if (!Array.isArray(listing.bids) || listing.bids.length === 0) return "No bids";
-  return Math.max(...listing.bids.map((b) => b.amount));
+  const highest = Math.max(...listing.bids.map((b) => b.amount));
+  return `Highest bid: ${highest} EUR`;
 }
 
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (m) => {
-    const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" };
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
     return map[m];
   });
 }

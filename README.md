@@ -65,3 +65,11 @@ ESLint is used to ensure clean and consistent JavaScript.
 #### Run linting:
 ```bash
 npm run lint
+
+
+### Unit /Utility Testing
+Light utility-based testing was implemented using Vitest for helper functions and API utilities.
+
+#### Run test:
+```bash
+npm run test

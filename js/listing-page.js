@@ -158,17 +158,19 @@ async function placeBid(listingId, amount) {
   try {
     hint.textContent = "Placing bid...";
 
-    await apiFetch(
-      `${AUCTION_LISTINGS_URL}/${listingId}/bids`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-          "X-Noroff-API-Key": API_KEY,
-        },
-        body: JSON.stringify({ amount: bidAmount }),
-      }
-    );
+    await apiFetch(`${AUCTION_LISTINGS_URL}/${listingId}/bids`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${user.accessToken}`,
+    "X-Noroff-API-Key": API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    amount: bidAmount,
+  }),
+});
+
+
 
 
     await refreshUserCredits();
