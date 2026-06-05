@@ -13,5 +13,5 @@ export function getMediaUrl(media) {
     return first.url;
   }
 
-  return "https://via.placeholder.com/400x300";
+  return "https://placehold.co/400x300?text=No+Image";
 }

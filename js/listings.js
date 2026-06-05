@@ -1,6 +1,6 @@
 import { AUCTION_LISTINGS_URL } from "./constants.js";
 import { apiFetch } from "./api.js";
-import { getMediaUrl } from "./utils.js"; 
+import { getMediaUrl } from "./utils.js";
 
 const listingsGrid = document.getElementById("listings-grid");
 
@@ -32,24 +32,23 @@ function renderListings(listings) {
   listings.forEach((listing) => {
     const image = getMediaUrl(listing.media);
     const bidsCount = listing._count?.bids ?? 0;
-
-    const endsAt = new Date(listing.endsAt);
-    const now = new Date();
-    const msLeft = Math.max(0, endsAt - now);
-    const hours = Math.floor(msLeft / (1000 * 60 * 60));
-    const minutes = Math.floor((msLeft / (1000 * 60)) % 60);
+    const timeLabel = getAuctionTimeLabel(listing.endsAt);
 
     const card = document.createElement("article");
     card.className = "card";
 
     card.innerHTML = `
       <div class="card-image">
-        <img src="${image}" alt="${escapeHtml(listing.title)}" />
+        <img
+          src="${image}"
+          alt="${escapeHtml(listing.title)}"
+          onerror="this.onerror=null;this.src='https://placehold.co/400x300?text=No+Image';"
+        />
       </div>
 
       <div class="card-body">
         <h3>${escapeHtml(listing.title)}</h3>
-        <p class="meta">${bidsCount} bids · ${hours}h ${minutes}m</p>
+        <p class="meta">${bidsCount} bids · ${timeLabel}</p>
         <p class="price">${getHighestBidText(listing)}</p>
       </div>
     `;
@@ -60,6 +59,31 @@ function renderListings(listings) {
 
     listingsGrid.appendChild(card);
   });
+}
+
+function getAuctionTimeLabel(endsAtValue) {
+  const endsAt = new Date(endsAtValue);
+  const now = new Date();
+  const msLeft = endsAt - now;
+
+  if (msLeft <= 0) {
+    return "Auction ended";
+  }
+
+  const totalMinutes = Math.floor(msLeft / (1000 * 60));
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
+
+  if (days > 0) {
+    return `Ends in ${days}d ${hours}h`;
+  }
+
+  if (hours > 0) {
+    return `Ends in ${hours}h ${minutes}m`;
+  }
+
+  return `Ends in ${minutes}m`;
 }
 
 function getHighestBidText(listing) {
